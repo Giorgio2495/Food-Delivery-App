@@ -12,15 +12,17 @@ import CarItem from './components/CarItem';
 import portada from './images/portada.png.png';
 import portada1 from './images/portada1.png';
 import { MenuItems, Items } from './components/Data.jsx';
+import { useStateValue } from './components/StateProvider';
 
 
 function App() {
   //Main Dish State
   const [isMainData, setMainData] = useState(
-    
-    // eslint-disable-next-line eqeqeq
-    Items.filter((element) => element.itemId == 'buger01')
+    Items.filter((element) => element.itemId === 'buger01')
   );
+
+  const [{cart, total}] = useStateValue();
+  const [totalPrice] = useState(0);
 
   useEffect(() => {
     const menuLi = document.querySelectorAll('#menu li');
@@ -43,7 +45,7 @@ function App() {
     }
 
     menuCard.forEach((n) => n.addEventListener("click", setMenuCardActive));
-  }, [isMainData]);
+  }, [isMainData, cart, total, totalPrice]);
 
   //set main dish items on filter
   const setData = (itemId) => {
@@ -116,19 +118,34 @@ function App() {
               <DebitCard />
             </div>
           </div>
+
+          {!cart ? (
+          
+          <div className="addSomeItem">
+              <img
+                src="https://firebasestorage.googleapis.com/v0/b/food-delivery-37c59.appspot.com/o/Images%2FemptyCart.png?alt=media&token=50b733d4-cdd9-4025-bffe-8efa4066ca24"
+                alt=""
+                className="emptyCart"
+              />
+            </div> ) : ( 
           
           <div className='cartCheckOutContainer'>
           <SubMenuContainer name={"Carts Items"} />
           <div className='cartContainer'>
+          <div className='cartItems'>
+            {
+              cart && cart.map(data => (
+                <CarItem 
+                key={data.id}
+                itemId={data.id}
+                name={data.name}
+                imgSrc={data.imgSrc}
+                price = {data.price}
+                />
+              ))
+            }
+
              
-            
-            <div className='cartItems'>
-              <CarItem 
-              name={'Burger Bristo'}
-              imgSrc={''}
-              qty = {'4'}
-              price = {'7.95'}
-              />
               </div>
             </div>
                 <div className='totalSection'>
@@ -138,6 +155,7 @@ function App() {
 
                 <button className='checkOut'>Check Out</button>
           </div>
+          )}
         </div>
       </main>
 

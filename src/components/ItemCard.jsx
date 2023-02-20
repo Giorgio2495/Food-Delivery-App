@@ -1,11 +1,28 @@
 import { AddRounded, Favorite, StarRounded } from "@mui/icons-material";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { Items } from "./Data";
+import { useStateValue } from './StateProvider';
+let cartData = []
 
-
-const ItemCard = ( {imgSrc, name, ratings, price, itemId} ) => {
+const ItemCard = ( {imgSrc, name, ratings, price, itemId } ) => {
 
     const [isFavourite, setFavourite] = useState(false);
     const [currentValue, setCurrentValue] = useState(Math.floor(ratings));
+
+    const [isCart, setCart] = useState(null);
+    // eslint-disable-next-line no-empty-pattern
+    const [{}, dispatch] = useStateValue();
+
+    useEffect(() => {
+        if(isCart) {
+            cartData.push(isCart);
+            dispatch({
+                // eslint-disable-next-line no-undef
+                type: actionType.SET_CART,
+                cart: cartData,
+            });
+        }
+    }, [dispatch, isCart]);
 
     const handleClick = (value) => {
         setCurrentValue(value);
@@ -14,13 +31,15 @@ const ItemCard = ( {imgSrc, name, ratings, price, itemId} ) => {
   return (
     <div className='itemCard' id={itemId}>
         <div className={`isfavourite ${isFavourite ? "active" : ""}`}
-        onClick = {() => setFavourite(!isFavourite)}>
+        onClick = {() => setFavourite(!isFavourite)}
+        >
             <Favorite />
         </div>
+
         <div className="imgBox">
-            <img src={imgSrc} alt="" className='itemImg'/>
+            <img src={imgSrc} alt="" className='itemImg' />
         </div>
-        <div className="imgContent">
+        <div className="itemContent">
             <h3 className='itemName'>{name}</h3>
             <div className="bottom">
                 <div className="ratings">
@@ -34,7 +53,9 @@ const ItemCard = ( {imgSrc, name, ratings, price, itemId} ) => {
                     ))}
                     <h3 className='price'><span>$</span>{price}</h3>
                 </div>
-                <i className="addtoCart">
+                <i 
+                className="addtoCart" onClick={ () => setCart(Items.find(n => n.id === itemId )) }
+                >
                     <AddRounded />
                 </i>
             </div>
