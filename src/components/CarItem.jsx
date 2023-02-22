@@ -4,28 +4,30 @@ import { actionType } from './reducer'
 import { useStateValue } from './StateProvider'
 let cartItems = []
 
-const CarItem = ({ name, imgSrc, price, itemId }) => {
+const CarItem = ({ itemId, name, imgSrc, price }) => {
     const [qty, setQty] = useState(1);
-    const [{ cart }, dispatch] = useStateValue();
+    const [{cart}, dispatch] = useStateValue();
     const [itemPrice, setItemPrice] = useState(parseInt(qty) * parseFloat(price));
+    
 
     useEffect(() => {
         cartItems = cart;
         setItemPrice(parseInt(qty) * parseFloat(price));
-    }, [cart, price, qty]);
+    }, [qty]);
 
     const updateQuantity = (action, id) => {
         if(action === 'add') {
-            setQty(qty +1)
+            setQty(qty +1);
         } else{
             if(qty === 1){
                 cartItems.pop(id);
                 dispatch({
                     type: actionType.SET_CART,
                     cart: cartItems,
-                })
-            }
+                });
+            } else {
             setQty(qty - 1);
+            }
         }
     };
 
@@ -39,9 +41,15 @@ const CarItem = ({ name, imgSrc, price, itemId }) => {
             <div className="itemQuantity">
                 <span>x {qty}</span>
                 <div className="quantity">
-                    <RemoveRounded className='itemRemove' onClick={() => updateQuantity('remove', itemId)} />
+                    <RemoveRounded 
+                    className='itemRemove' 
+                    onClick={() => updateQuantity('remove', itemId)} 
+                    />
 
-                    <AddRounded className='itemAdd' onClick={() => updateQuantity('add', itemId)} />
+                    <AddRounded 
+                    className='itemAdd' 
+                    onClick={() => updateQuantity('add', itemId)} 
+                    />
                 </div>
             </div>
         </div>

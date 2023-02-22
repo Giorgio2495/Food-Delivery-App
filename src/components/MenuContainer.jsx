@@ -7,7 +7,7 @@ const MenuContainer = ({link, icon, isHome}) => {
             <span className='icon'>{icon}</span>
         </a>
     </li>
-  )
+  );
 }
 
-export default MenuContainer
+export default MenuContainer;

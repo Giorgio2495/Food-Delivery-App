@@ -16,7 +16,7 @@ const DebitCard = () => {
     />
 
     <div className="cardnumber">1234 567 8920 3200</div>
-    <div className="cardname">Vetrivel Ravi</div>
+    <div className="cardname">Lounch</div>
     <div className="cardfrom">10/21</div>
     <div className="cardto">10/25</div>
     <div className="cardring"></div>

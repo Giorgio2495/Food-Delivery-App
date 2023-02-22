@@ -1,27 +1,26 @@
 import { HomeRounded, PersonOutlineOutlined, RestoreOutlined, SearchOutlined } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import './App.css';
-import BannerName from './components/BannerName';
-import Header from './components/Header';
-import MenuCard from './components/MenuCard';
-import MenuContainer from './components/MenuContainer';
-import SubMenuContainer from './components/SubMenuContainer';
-import DebitCard from './components/DebitCard.jsx'
-import ItemCard from './components/ItemCard';
-import CarItem from './components/CarItem';
-import portada from './images/portada.png.png';
-import portada1 from './images/portada1.png';
-import { MenuItems, Items } from './components/Data.jsx';
-import { useStateValue } from './components/StateProvider';
+import '../App.css';
+import BannerName from '../components/BannerName';
+import Header from '../components/Header';
+import MenuCard from '../components/MenuCard';
+import MenuContainer from '../components/MenuContainer';
+import SubMenuContainer from '../components/SubMenuContainer';
+import DebitCard from '../components/DebitCard.jsx'
+import ItemCard from '../components/ItemCard';
+import CarItem from '../components/CarItem';
+import portada from '../images/portada.png.png';
+import portada1 from '../images/portada1.png';
+import { MenuItems, Items } from '../components/Data.jsx';
+import { useStateValue } from '../components/StateProvider';
 
 
 function App() {
   //Main Dish State
   const [isMainData, setMainData] = useState(
-    Items.filter((element) => element.itemId === 'buger01')
+    Items.filter((element) => element.itemId === 'Restaurant1')
   );
-
-  const [{cart, total}] = useStateValue();
+  const [cart, total, dispatch] = useStateValue();
   const [totalPrice] = useState(0);
 
   useEffect(() => {
@@ -36,7 +35,8 @@ function App() {
 
     //Menu card active toggle
 
-    const menuCard = document.querySelector('.rowContainer')
+    const menuCard = document
+    .querySelector('.rowContainer')
     .querySelectorAll('.rowMenuCard');
 
     function setMenuCardActive() {
@@ -47,10 +47,9 @@ function App() {
     menuCard.forEach((n) => n.addEventListener("click", setMenuCardActive));
   }, [isMainData, cart, total, totalPrice]);
 
-  //set main dish items on filter
+  
   const setData = (itemId) => {
-    // eslint-disable-next-line eqeqeq
-    setMainData (Items.filter((element) => element.itemId == itemId))
+    setMainData (Items.filter((element) => element.itemId === itemId));
   };
 
   return (
@@ -83,35 +82,33 @@ function App() {
           </div>
           <div className='rowContainer'>
 
-            {MenuItems && MenuItems.map((data) => (
-                <div key={data.id} onClick = {() => setData(data.itemId)}
-                 >
+            {MenuItems && 
+            MenuItems.map((data) => (
+                <div key={data.id} onClick = {() => setData(data.itemId)}>
               <MenuCard 
               imgSrc={data.imgSrc} 
               name={data.name} 
               name1={data.name1} 
               name2={data.name2} 
-              // eslint-disable-next-line eqeqeq
-              isActive  ={data.id == 1 ? true : false} />
+              isActive  ={data.id === 1 ? true : false} 
+              />
             </div>
               ))}
-          
           </div>
           <div className='dishitemContainer'>
-            {
-              isMainData && isMainData.map((data) => (
+            {isMainData && 
+            isMainData.map((data) => (
                 <ItemCard 
                 key={data.id}
                 itemId = {data.id}
                 imgSrc={data.imgSrc} 
                 name={data.name} 
                 ratings={data.ratings} 
-                price={data.price}/>
+                price={data.price}
+                />
               ))}
-            
+            </div>
           </div>
-
-        </div>
         <div className='rightMenu'>
           <div className='debitCardContainer'>
             <div className='debitCard'>
@@ -133,24 +130,24 @@ function App() {
           <SubMenuContainer name={"Carts Items"} />
           <div className='cartContainer'>
           <div className='cartItems'>
-            {
-              cart && cart.map(data => (
+            {cart && 
+            cart.map((data) => (
                 <CarItem 
                 key={data.id}
                 itemId={data.id}
                 name={data.name}
                 imgSrc={data.imgSrc}
+                qty={"4"}
                 price = {data.price}
                 />
-              ))
-            }
+              ))}
 
              
               </div>
             </div>
                 <div className='totalSection'>
                   <h3>Total</h3>
-                  <p><span>$ </span>45.0</p>
+                  <p><span>$ </span>{total}</p>
                 </div>
 
                 <button className='checkOut'>Check Out</button>
@@ -171,6 +168,8 @@ function App() {
           <MenuContainer link={'#'} icon = {<RestoreOutlined />} />
            {/* prettier ignore */}
            <MenuContainer link={'#'} icon = {<PersonOutlineOutlined />} />
+
+           <div className='indicator'></div> 
         </ul>
       </div>
   

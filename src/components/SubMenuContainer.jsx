@@ -5,7 +5,7 @@ const SubMenuContainer = () => {
     <div className='subMenuContainer'>
         <p>Restaurants and cafes</p>
     </div>
-  )
+  );
 }
 
-export default SubMenuContainer
+export default SubMenuContainer;
